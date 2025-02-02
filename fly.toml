@@ -1,0 +1,32 @@
+app = "new-my-family-app"
+
+[build]
+  # Dockerfileやビルド設定
+
+[[services]]
+  internal_port = 3000
+  processes = ["app"]
+  protocol = "tcp"
+  force_https = true
+
+  [[services.ports]]
+    port     = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port     = 443
+    handlers = ["tls", "http"]
+
+  [services.concurrency]
+    type = "connections"
+    soft_limit = 25
+    hard_limit = 30
+
+  [services.http_checks]
+    path = "/"
+    method = "get"
+    interval = "10s"
+    timeout = "2s"
+
+[deploy]
+  release_command = "npx prisma migrate deploy"

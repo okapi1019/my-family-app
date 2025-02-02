@@ -1,0 +1,26 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+model Task {
+    id      Int     @id @default(autoincrement())
+    name    String
+    cycle   Int
+    createdAt   DateTime @default(now())
+    completions Completion[]  // Task が複数の Completion を持つ
+}
+
+model Completion {
+    id      Int     @id @default(autoincrement())
+    taskId  Int
+    doneBy  String
+    doneAt  DateTime    @default(now())
+
+    Task    Task    @relation(fields:   [taskId], references: [id])
+}

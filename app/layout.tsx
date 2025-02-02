@@ -19,16 +19,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
+      {/* 
+        Tailwindで背景を白に、文字色を黒～ダークグレーにする場合は
+        bg-white text-gray-900 などのクラスを付与
+      */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         {children}
       </body>
     </html>
   );
-}
+}

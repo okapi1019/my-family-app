@@ -1,0 +1,26 @@
+services:
+    db:
+        image: postgres:15-alpine
+        container_name: my-postgres
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: pass
+            POSTGRES_DB: familyapp
+        ports:
+            - '5432:5432'
+        volumes:
+            - 'db_data:/var/lib/postgresql/data'
+    
+    web:
+        build: .
+        container_name: my-family-app
+        ports:
+            - '3000:3000'
+        environment:
+            DATABASE_URL: 'postgresql://user:pass@db:5432/familyapp'
+        depends_on:
+            - db 
+        command: ["sh", "-c", "npx prisma migrate deploy && npm run start"]
+
+volumes:
+    db_data:
