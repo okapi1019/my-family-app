@@ -7,14 +7,13 @@ const prisma = new PrismaClient()
 
 /**
  * PUTリクエスト: Taskを更新
- * (例: /api/tasks/123) → { params }: { params: Promise<{ id: string }> } から id を取得
+ * (例: /api/tasks/123) → { params }: { params: { id: string } } から id を取得
  */
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  // Next.js 15以降、paramsはPromiseとして扱う
-  const { id } = await params
+  const { id } = params
 
   // リクエストボディ (JSON)
   const { name, cycle } = await request.json()
@@ -33,9 +32,9 @@ export async function PUT(
  */
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { id } = params
 
   await prisma.task.delete({
     where: { id: Number(id) },
